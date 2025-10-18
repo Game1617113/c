@@ -51,7 +51,6 @@ def calculate():
 root = tk.Tk()
 root.title("เครื่องคิดเลข Python")
 root.geometry("250x350") # กำหนดขนาดเริ่มต้น
-root.resizable(False, False) # ไม่อนุญาตให้เปลี่ยนขนาดหน้าต่าง
 
 # 2. สร้างช่องแสดงผล (Entry widget)
 display_entry = tk.Entry(
@@ -112,4 +111,5 @@ for i in range(4):
     root.grid_columnconfigure(i, weight=1)
 
 # 5. เริ่มลูปหลักของ GUI
+
 root.mainloop()
