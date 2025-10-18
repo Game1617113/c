@@ -77,7 +77,7 @@ def open_notes():
 
     if notes_window is None or not notes_window.winfo_exists():
         notes_window = tk.Toplevel(root)
-        notes_window.title("Notes / บันทึกชั่วคราว")
+        notes_window.title("Notes")
         notes_window.geometry("400x300")
         
         scrollbar = tk.Scrollbar(notes_window)
@@ -109,8 +109,10 @@ def disable_keyboard_input(event):
     return "break"
 
 root = tk.Tk()
-root.title("เครื่องคิดเลข Python")
+root.title("Calculator")
 root.geometry("250x400")
+bg="#4B4B4B"
+root.configure(bg=bg)
 
 display_entry = tk.Entry(
     root, 
@@ -136,8 +138,10 @@ for (text, row, col) in buttons_layout:
         text=text, 
         padx=15, 
         pady=10,
-        font=('Arial', 14),
-        command=lambda t=text: button_click(t)
+        font=('Arial', 14, 'bold' ,),
+        command=lambda t=text: button_click(t),
+        fg="#FFFFFF",
+        bg="#202020"
     ).grid(row=row, column=col, sticky="nsew", padx=2, pady=2)
 
 tk.Button(
@@ -146,7 +150,8 @@ tk.Button(
     padx=15, 
     pady=10,
     font=('Arial', 14, 'bold'),
-    bg="#EEEEEE",
+    bg="#202020",
+    fg="#FFFFFF",
     command=backspace
 ).grid(row=4, column=2, sticky="nsew", padx=2, pady=2)
 
@@ -156,7 +161,8 @@ tk.Button(
     padx=15, 
     pady=10,
     font=('Arial', 14, 'bold'),
-    bg="#FFCCCC",
+    bg="#4B4B4B",
+    fg="#FF2020",
     command=clear_display
 ).grid(row=5, column=0, sticky="nsew", padx=2, pady=2)
 
@@ -166,7 +172,8 @@ tk.Button(
     padx=15, 
     pady=10,
     font=('Arial', 14, 'bold'),
-    bg="#ccffcc",
+    bg="#20CA2F",
+    fg="#FFFFFF",
     command=calculate
 ).grid(row=5, column=1, columnspan=3, sticky="nsew", padx=2, pady=2)
 
@@ -176,7 +183,8 @@ tk.Button(
     padx=15, 
     pady=10,
     font=('Arial', 12),
-    bg="#CCEEFF",
+    bg="#F7F71E",
+    fg="#000000",
     command=open_notes
 ).grid(row=6, column=0, columnspan=4, sticky="nsew", padx=2, pady=2)
 
@@ -184,5 +192,6 @@ for i in range(7):
     root.grid_rowconfigure(i, weight=1)
 for i in range(4):
     root.grid_columnconfigure(i, weight=1)
+
 
 root.mainloop()
