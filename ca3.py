@@ -228,5 +228,4 @@ for i in range(7):
 for i in range(4):
     root.grid_columnconfigure(i, weight=1)
 
-# 5. เริ่มลูปหลักของ GUI
 root.mainloop()
