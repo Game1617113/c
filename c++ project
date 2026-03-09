@@ -1,0 +1,160 @@
+
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <fstream>
+
+using namespace std;
+
+class Player {
+protected:
+    string name;
+
+public:
+    Player(string n);
+    virtual int choose();
+    int choose(int c); 
+};
+
+Player::Player(string n) {
+    name = n;
+}
+
+int Player::choose() {
+
+    int c;
+
+    while(true){
+
+        cout << "Choose: 1 = Rock, 2 = Scissors, 3 = Paper : ";
+
+        if(!(cin >> c)){
+            cout << "Error: Please enter numbers only (1-3)\n";
+            cin.clear();
+            cin.ignore(1000,'\n');
+            continue;
+        }
+
+        if(c < 1 || c > 3){
+            cout << "Error: Number must be between 1 and 3\n";
+            continue;
+        }
+
+        return c;
+    }
+}
+
+int Player::choose(int c) {
+    return c;
+}
+
+class Bot : public Player {
+public:
+    Bot(string n) : Player(n) {}
+    int choose();
+};
+
+int Bot::choose() {
+    return rand() % 3 + 1;
+}
+
+class Game {
+private:
+    Player *player;
+    Bot *bot;
+    int scorePlayer = 0;
+    int scoreBot = 0;
+
+public:
+    Game(Player *p, Bot *b);
+    void playRound(int round);
+    void showResult();
+    int checkWin(int p, int b);
+};
+
+Game::Game(Player *p, Bot *b) {
+    player = p;
+    bot = b;
+}
+
+string convertChoice(int c){
+
+    if(c==1) return "Rock";
+    if(c==2) return "Scissors";
+    if(c==3) return "Paper";
+
+    return "";
+}
+
+void Game::playRound(int round) {
+
+    cout << "\n----- Round " << round << " -----\n";
+
+    int p = player->choose();
+    int b = bot->choose();
+
+    cout << "You chose: " << convertChoice(p) << endl;
+    cout << "Bot chose: " << convertChoice(b) << endl;
+
+    int result = checkWin(p, b);
+
+    if (result == 1) {
+        cout << "You win this round!\n";
+        scorePlayer++;
+    }
+    else if (result == 2) {
+        cout << "Bot wins this round!\n";
+        scoreBot++;
+    }
+    else {
+        cout << "Draw!\n";
+    }
+}
+
+int Game::checkWin(int p, int b) {
+
+    if (p == b) return 0;
+
+    if ((p == 1 && b == 2) ||
+        (p == 2 && b == 3) ||
+        (p == 3 && b == 1))
+        return 1;
+
+    return 2;
+}
+
+void Game::showResult() {
+
+    cout << "\n===== FINAL RESULT =====\n";
+    cout << "Player Score: " << scorePlayer << endl;
+    cout << "Bot Score: " << scoreBot << endl;
+
+    ofstream file("result.txt");
+    file << "Player " << scorePlayer << " - Bot " << scoreBot;
+    file.close();
+
+    if (scorePlayer > scoreBot)
+        cout << "You win the game!\n";
+    else if (scoreBot > scorePlayer)
+        cout << "Bot wins the game!\n";
+    else
+        cout << "Game Draw!\n";
+}
+
+int main() {
+
+    srand(time(0));
+
+    Player p("Player");
+    Bot b("Bot");
+
+    Game game(&p, &b);
+
+    for (int i = 1; i <= 3; i++) {
+        game.playRound(i);
+    }
+
+    game.showResult();
+
+    return 0;
+}
